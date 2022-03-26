@@ -1,0 +1,8 @@
+install EXPRESS:
+    yarn add express
+
+install eslint:
+    yarn add eslint --save-dev
+
+install babel-eslint:
+    yarn add babel-eslint --save-dev
