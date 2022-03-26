@@ -6,3 +6,13 @@ install eslint:
 
 install babel-eslint:
     yarn add babel-eslint --save-dev
+
+install nodemon: dung de tu reload khi chung tu update code
+    yarn add nodemon --save-dev
+
+install module babel pakages:
+    yarn add @babel/core @babel/cli @babel/node @babel/preset-env @babel/plugin-transform-runtime --save-dev
+    yarn add @babel/runtime --save
+
+install babel-plugin-module-resolver:
+    yarn add babel-plugin-module-resolver --save-dev
