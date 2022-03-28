@@ -1,6 +1,8 @@
 import { MongoClient } from "mongodb";
 import { env } from "./environment";
 
+let dbInstance = null;
+
 const URI = env.MONGODB_URI;
 
 let options = {
@@ -8,26 +10,19 @@ let options = {
     useNewUrlParser: true
 }
 
-export const connectDB = async () => {
+export const  connectDB = async () => {
     const client = new MongoClient(URI, options);
-    try {
-        // connect the client to the server
-        await client.connect();
 
-        console.log('CONNECT SUCCESSFULLY');
-
-        // list DB
-        await listDB(client);
-    } finally {
-        // ensure that the client will close when finish/error
-        await client.close();
-    }
+    // connect the client to the server
+    await client.connect();
+    // assign clientDB to dbInstance
+    dbInstance = client.db(env.DATABASE_NAME);
 }
 
-const listDB = async (client) => {
-    const listDB = await client.db().admin().listDatabases();
-    console.log('Your list dbs name:');
-    listDB.databases.forEach(db => {
-        console.log(db.name);
-    });
+// Get DB instace
+export const getDatabase = () => {
+    if (!dbInstance) {
+        throw new Error('Must connect to Database first!');
+    }
+    return dbInstance;
 }
