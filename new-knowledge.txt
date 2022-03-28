@@ -17,4 +17,29 @@ Joi:
                 // true -> tra ve loi dau tien
                 // false -> tra ve tat ca
                 abortEarly: false
+                // Thường dùng cho update nếu để true thì sẽ không xuất hiện báo lỗi khi update các thuộc tính không có trong validation condition
+                allowUnknow: true,
             }
+
+// Tim va update
+db.collection.findOneAndUpdate(
+   <filter>, -> tim phan tu co id hoac theo gi do truyen vao
+   <update document or aggregation pipeline>, // Changed in MongoDB 4.2
+   {
+     projection: <document>,
+     sort: <document>,
+     maxTimeMS: <number>,
+     upsert: <boolean>,
+     returnDocument: <string>,
+     returnNewDocument: <boolean>,
+     collation: <document>,
+     arrayFilters: [ <filterdocument1>, ... ]
+   }
+)
+
+// Example findOneAndUpdate:
+const result = await getDatabase().collection(columnCollectionName).findOneAndUpdate(
+            { _id: id }, -> filter
+            { $set: data }, -> dataUpdate
+            { returnDocument: 'after' } -> trả về bản ghi sau khi update chứ không phải bản ghi gốc (mặc định là true trả về bản ghi gốc trc khi xảy ra update)
+        );

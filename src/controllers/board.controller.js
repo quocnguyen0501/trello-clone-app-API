@@ -1,5 +1,5 @@
 import { boardService } from "../services/board.service"
-import {HttpStatusCode} from "*/utilities/constants"
+import { HttpStatusCode } from "*/utilities/constants"
 
 const createNew = async (req, res) => {
     /**
