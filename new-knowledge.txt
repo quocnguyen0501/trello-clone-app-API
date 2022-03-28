@@ -1,0 +1,20 @@
+Luồng chạy của dữ liệu:
+server -> route (v1 -> index (route chinh v1) -> các route con) -> validation -> controller -> services
+
+throw new Error(error); -> de nhan duoc error khi fail o service o phan try/catch
+
+* req.body:
+        Chứa các cặp key-value của dữ liệu được đệ trình trong phần body của Request.
+        Theo mặc định, nó là undefined, và được sinh khi bạn sử dụng một Middleware để parse phần body của request (ví dụ body-parser)
+
+Joi:
+    validateAsync function: 
+        cach thuc: 
+            <condition compare>.validateAsync(< lieu dau vao>, <option>)
+            voi option duoc dinh nghia:
+            option = {
+                // Gia su chung ta co 2 truong trong schema loi neu: 
+                // true -> tra ve loi dau tien
+                // false -> tra ve tat ca
+                abortEarly: false
+            }

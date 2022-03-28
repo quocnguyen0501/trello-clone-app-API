@@ -26,3 +26,6 @@ install dotenv: (De su dung file .env)
 install joi: (validate data before insert to database)
     document: https://joi.dev/api/?v=17.6.0
     yarn add joi --save
+
+install body-parser:
+    yarn ad body-parser --save
