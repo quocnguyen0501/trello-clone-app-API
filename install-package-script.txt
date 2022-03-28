@@ -16,3 +16,9 @@ install module babel pakages:
 
 install babel-plugin-module-resolver:
     yarn add babel-plugin-module-resolver --save-dev
+
+install mongoDB:
+    yarn add mongodb --save
+
+install dotenv: (De su dung file .env)
+    yarn add dotenv --save

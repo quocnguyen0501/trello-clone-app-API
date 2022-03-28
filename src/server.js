@@ -1,9 +1,17 @@
 import express from "express";
+import { env } from "./config/environment";
+import { connectDB } from "./config/mongdb";
 
 const app = express();
 
-const hostname = 'localhost';
-const port = 8080
+const hostname = env.HOST;
+const port = env.PORT;
+
+try {
+    connectDB();
+} catch (error) {
+    console.log(error);
+}
 
 app.get('/', (req, res) => {
     res.end('<h1>HELLO WORLD QUOC NGUYEN</h1><hr/>');
