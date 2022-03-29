@@ -43,3 +43,6 @@ const result = await getDatabase().collection(columnCollectionName).findOneAndUp
             { $set: data }, -> dataUpdate
             { returnDocument: 'after' } -> trả về bản ghi sau khi update chứ không phải bản ghi gốc (mặc định là true trả về bản ghi gốc trc khi xảy ra update)
         );
+
+Tìm hiểu các MongoDB aggregation operator hay dùng:
+    https://kipalog.com/posts/Tim-hieu-cac-MongoDB-aggregation-operator-hay-dung-a3854e69-fd9c-4fec-aca4-0b4ea3995caf
