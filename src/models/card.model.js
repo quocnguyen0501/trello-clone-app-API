@@ -6,7 +6,7 @@ import { getDatabase } from '../config/mongdb';
 const cardCollectionName = 'cards'
 
 const cardCollectionSchema = Joi.object({
-    boardId: Joi.string().required(),
+    boardId: Joi.string().required(), //also ObjectId when create new
     columnId: Joi.string().required(),
     title: Joi.string().required().min(1),
     cover: Joi.string().default(''),
@@ -27,8 +27,13 @@ const validateSchema = async (data) => {
 
 const createNew = async (data) => {
     try {
-        const value = await validateSchema(data);
-        const result = await getDatabase().collection(cardCollectionName).insertOne(value);
+        const validatedValue = await validateSchema(data);
+        const insertValue = {
+            ...validatedValue,
+            boardId: ObjectId(validatedValue.boardId),
+            columnId: ObjectId(validatedValue.columnId)
+        }
+        const result = await getDatabase().collection(cardCollectionName).insertOne(insertValue);
 
         return result;
     } catch (error) {
@@ -47,6 +52,7 @@ const findById = async (id) => {
 }
 
 export const cardModel = {
+    cardCollectionName,
     createNew,
     findById
 }

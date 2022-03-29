@@ -2,10 +2,10 @@ import Joi from 'joi'
 import { ObjectId } from 'mongodb';
 import { getDatabase } from '../config/mongdb';
 
-const columnCollectionName = 'columns'
+const columnCollectionName = 'columns';
 
 const columnCollectionSchema = Joi.object({
-    boardId: Joi.string().required(),
+    boardId: Joi.string().required(), //also ObjectId when create new
     title: Joi.string().required().min(1).max(50).trim(),
     cardOrder: Joi.array().items(Joi.string()).default([]),
     createdAt: Joi.date().timestamp().default(Date.now()),
@@ -25,8 +25,12 @@ const validateSchema = async (data) => {
 
 const createNew = async (data) => {
     try {
-        const value = await validateSchema(data);
-        const result = await getDatabase().collection(columnCollectionName).insertOne(value);
+        const validatedValue = await validateSchema(data);
+        const insertValue = {
+            ...validatedValue,
+            boardId: ObjectId(validatedValue.boardId)
+        }
+        const result = await getDatabase().collection(columnCollectionName).insertOne(insertValue);
 
         return result;
     } catch (error) {
@@ -39,6 +43,25 @@ const findById = async (id) => {
         const result = await getDatabase().collection(columnCollectionName).findOne({ _id: ObjectId(id) });
 
         return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+/**
+ *
+ * @param {string} columnId
+ * @param {string} cardId
+ */
+const pushCardOrder = async (columnId, cardId) => {
+    try {
+        const result = await getDatabase().collection(columnCollectionName).findOneAndUpdate(
+            { _id: ObjectId(columnId) },
+            { $push: { cardOrder: cardId } },
+            { returnDocument: 'after' }
+        );
+
+        return result.value;
     } catch (error) {
         throw new Error(error);
     }
@@ -59,7 +82,9 @@ const update = async (id, data) => {
 }
 
 export const columnsModel = {
+    columnCollectionName,
     createNew,
     findById,
-    update
+    update,
+    pushCardOrder
 }
