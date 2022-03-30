@@ -29,3 +29,6 @@ install joi: (validate data before insert to database)
 
 install body-parser:
     yarn ad body-parser --save
+
+install Lodash:
+    yarn add lodash --save

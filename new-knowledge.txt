@@ -46,3 +46,6 @@ const result = await getDatabase().collection(columnCollectionName).findOneAndUp
 
 Tìm hiểu các MongoDB aggregation operator hay dùng:
     https://kipalog.com/posts/Tim-hieu-cac-MongoDB-aggregation-operator-hay-dung-a3854e69-fd9c-4fec-aca4-0b4ea3995caf
+
+Tìm hiểu updateMany trong MongoDB:
+    https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany/
