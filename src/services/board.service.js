@@ -15,6 +15,11 @@ const getFullBoard = async (id) => {
     try {
         const board = await BoardsModel.getFullBoard(id);
 
+        // Nếu client truyền id board ko đúng thì sẽ throw error
+        if (!board || !board.columns) {
+            throw new Error('Board not found');
+        }
+
         // Add card to each column
         board.columns.forEach(column => {
             column.cards = board.cards.filter((col) => {
