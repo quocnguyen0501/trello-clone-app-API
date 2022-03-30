@@ -1,7 +1,9 @@
 import express from "express";
+import cors from 'cors'
 import { env } from "./config/environment";
 import { connectDB } from "./config/mongdb";
 import { apiV1 } from "./routes/v1";
+import { corsOptions } from "./config/CORS";
 
 connectDB()
     .then(() => console.log('Connected success to database server!'))
@@ -14,6 +16,8 @@ connectDB()
 
 const bootServer = () => {
     const app = express();
+
+    app.use(cors(corsOptions));
 
     const hostname = env.HOST;
     const port = env.PORT;
