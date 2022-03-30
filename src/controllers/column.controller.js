@@ -17,7 +17,6 @@ const update = async (req, res) => {
         const { id } = req.params;
         const result = await columnService.update(id, req.body);
 
-        console.log(result);
         res.status(HttpStatusCode.OK).json(result);
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({

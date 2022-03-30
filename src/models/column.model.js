@@ -69,9 +69,15 @@ const pushCardOrder = async (columnId, cardId) => {
 
 const update = async (id, data) => {
     try {
+        // the data server receive have a type of boardId is string but the DB store ObjectId -> set again boardId
+        const updateData = {
+            ...data,
+            boardId: ObjectId(data.boardId)
+        }
+
         const result = await getDatabase().collection(columnCollectionName).findOneAndUpdate(
             { _id: ObjectId(id) },
-            { $set: data },
+            { $set: updateData },
             { returnDocument: 'after' }
         );
 

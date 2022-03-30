@@ -51,8 +51,37 @@ const findById = async (id) => {
     }
 }
 
+/**
+ *
+ * @param {Array of string card id of column deleted} ids
+ */
+const deleteAllCardByColumn = async (ids) => {
+    try {
+        // Convert id type: string -> ObjectId
+        const transformIds = ids.map((id) => {
+            return ObjectId(id);
+        });
+
+        const result = await getDatabase().collection(cardCollectionName).updateMany(
+            // Condition filter: Update item have id in ids array
+            {
+                _id: { $in: transformIds }
+            },
+            // Update value
+            {
+                $set: { _destroy: true }
+            }
+        );
+
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 export const cardModel = {
     cardCollectionName,
     createNew,
-    findById
+    findById,
+    deleteAllCardByColumn
 }

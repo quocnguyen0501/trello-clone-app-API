@@ -69,7 +69,9 @@ const getFullBoard = async (id) => {
         const result = await getDatabase().collection(boardCollectionName).aggregate([
             {
                 $match: {
-                    _id: ObjectId(id) //Tìm bản ghi của board khớp với id
+                    //Tìm bản ghi của board khớp với id va _destroy: false
+                    _id: ObjectId(id),
+                    _destroy: false
                 }
             },
             {
