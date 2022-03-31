@@ -24,8 +24,8 @@
         "url": "https://github.com/quocnguyen0501/trello-clone-app-API/issues"
     },
     "engines": {
-      "node": "0.10.x",
-      "npm": "1.3.x"
+      "node": "14.19.0",
+      "npm": "8.5.3"
     },
     "homepage": "https://github.com/quocnguyen0501/trello-clone-app-API#readme",
     "dependencies": {
