@@ -19,7 +19,6 @@ const bootServer = () => {
 
     app.use(cors(corsOptions));
 
-    const hostname = env.HOST;
     const port = env.PORT;
 
     // enable request body data
@@ -29,7 +28,8 @@ const bootServer = () => {
     // use APIs v1
     app.use('/v1', apiV1);
 
-    app.listen(port, hostname, () => {
-        console.log(`hello server, i'm running at ${hostname}:${port}`);
+    // Support heroku deploy
+    app.listen(port || process.env.PORT, () => {
+        console.log(`hello server, i'm running at port:${process.env.PORT}/`);
     })
 }
