@@ -8,5 +8,5 @@ export const HttpStatusCode = {
 
 export const WHITELIST_DOAMAINS = [
     'http://localhost:3000',
-    'https://trello-app-web-e7ce0.web.app/'
+    'https://trello-app-web-e7ce0.web.app'
 ];
