@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { cloneDeep } from "lodash";
 import { ObjectId } from "mongodb";
 import { getDatabase } from "../config/mongdb";
 import { cardModel } from "./card.model";
@@ -98,9 +99,53 @@ const getFullBoard = async (id) => {
     }
 }
 
+/**
+ *
+ * @param {ObjectId} id : Id of Board
+ * @param {Object} data { columnOrder }
+ * @returns result.value
+ */
+const update = async (id, data) => {
+    try {
+        /**
+         * get full board (columnOrder have an column have state destroy: true)
+         */
+        const allBoard = await findById(id);
+        // the data server receive have a type of boardId is string but the DB store ObjectId -> set again boardId
+        const updateData = cloneDeep(data);
+
+        const tempBoard = cloneDeep(allBoard);
+        let columnOrderTemp = tempBoard.columnOrder;
+
+        // slice mising element because data receive don't have column have state destroy :true
+        const cloneColumnOrderTemp = cloneDeep(columnOrderTemp);
+        columnOrderTemp = cloneColumnOrderTemp.slice(updateData.columnOrder.length, cloneColumnOrderTemp.length);
+
+        let cloneUpdateDataColumnOrder = cloneDeep(updateData.columnOrder);
+        // merge a new columnOrder and array column have state of _destroy:true
+        const finalNewColumnOrder = cloneUpdateDataColumnOrder.concat(columnOrderTemp);
+
+        const finalUpdateData = {
+            ...updateData,
+            columnOrder: finalNewColumnOrder
+        }
+
+        const result = await getDatabase().collection(boardCollectionName).findOneAndUpdate(
+            { _id: ObjectId(id) },
+            { $set: finalUpdateData },
+            { returnDocument: 'after' }
+        );
+
+        return result.value;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 export const BoardsModel = {
     createNew,
     findById,
     getFullBoard,
-    pushColumnOrder
+    pushColumnOrder,
+    update
 }

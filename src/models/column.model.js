@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { cloneDeep } from 'lodash';
 import { ObjectId } from 'mongodb';
 import { getDatabase } from '../config/mongdb';
 
@@ -70,9 +71,10 @@ const pushCardOrder = async (columnId, cardId) => {
 const update = async (id, data) => {
     try {
         // the data server receive have a type of boardId is string but the DB store ObjectId -> set again boardId
-        const updateData = {
-            ...data,
-            boardId: ObjectId(data.boardId)
+        const updateData = cloneDeep(data);
+
+        if (data.boardId) {
+            updateData.boardId = ObjectId(data.boardId)
         }
 
         const result = await getDatabase().collection(columnCollectionName).findOneAndUpdate(

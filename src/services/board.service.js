@@ -45,7 +45,31 @@ const getFullBoard = async (id) => {
     }
 }
 
+const update = async (id, data) => {
+    try {
+        const updateData = {
+            ...data,
+            updatedAt: Date.now()
+        }
+        // Data send from client have an _id and columns but store in DB don't need to save with structure -> check if _id and cards[] exist -> delete
+        if (updateData._id) {
+            delete updateData._id;
+        }
+
+        if (updateData.columns) {
+            delete updateData.cards;
+        }
+
+        const updatedBoard = await BoardsModel.update(id, updateData);
+
+        return updatedBoard;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 export const boardService = {
     createNew,
-    getFullBoard
+    getFullBoard,
+    update
 }
