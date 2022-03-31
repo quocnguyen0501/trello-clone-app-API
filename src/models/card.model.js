@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { cloneDeep } from 'lodash';
 import { ObjectId } from 'mongodb';
 import { getDatabase } from '../config/mongdb';
 
@@ -51,6 +52,30 @@ const findById = async (id) => {
     }
 }
 
+const update = async (id, data) => {
+    try {
+        // the data server receive have a type of boardId is string but the DB store ObjectId -> set again boardId
+        const updateData = cloneDeep(data);
+
+        if (data.boardId) {
+            updateData.boardId = ObjectId(data.boardId)
+        }
+        if (data.columnId) {
+            updateData.columnId = ObjectId(data.columnId)
+        }
+
+        const result = await getDatabase().collection(cardCollectionName).findOneAndUpdate(
+            { _id: ObjectId(id) },
+            { $set: updateData },
+            { returnDocument: 'after' }
+        );
+
+        return result.value;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 /**
  *
  * @param {Array of string card id of column deleted} ids
@@ -83,5 +108,6 @@ export const cardModel = {
     cardCollectionName,
     createNew,
     findById,
-    deleteAllCardByColumn
+    deleteAllCardByColumn,
+    update
 }
