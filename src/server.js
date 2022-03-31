@@ -1,6 +1,5 @@
 import express from "express";
 import cors from 'cors'
-import { env } from "./config/environment";
 import { connectDB } from "./config/mongdb";
 import { apiV1 } from "./routes/v1";
 import { corsOptions } from "./config/CORS";
@@ -19,7 +18,7 @@ const bootServer = () => {
 
     app.use(cors(corsOptions));
 
-    const port = env.PORT;
+    // const port = env.PORT;
 
     // enable request body data
     app.use(express.json())
@@ -29,7 +28,7 @@ const bootServer = () => {
     app.use('/v1', apiV1);
 
     // Support heroku deploy
-    app.listen(port || process.env.PORT, () => {
+    app.listen(process.env.PORT, () => {
         console.log(`hello server, i'm running at port:${process.env.PORT}/`);
     })
 }
